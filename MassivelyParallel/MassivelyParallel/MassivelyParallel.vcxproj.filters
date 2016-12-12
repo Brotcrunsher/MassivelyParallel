@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MassivelyParallel.cpp" />
+    <ClCompile Include="GPUMngr.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUPlatform.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUDevice.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUProgram.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUKernel.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+    <ClCompile Include="GPUMem.cpp">
+      <Filter>GPUMngr</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GPUMngr.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUPlatform.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUDevice.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUProgram.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="HelloWorld_Kernel.cl" />
+    <ClInclude Include="GPUKernel.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUMem.h">
+      <Filter>GPUMngr</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GPUMngr">
+      <UniqueIdentifier>{1412711d-3f04-4cc6-90e7-3d03728f9087}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
