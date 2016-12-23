@@ -23,6 +23,9 @@
     <ClCompile Include="GPUMem.cpp">
       <Filter>GPUMngr</Filter>
     </ClCompile>
+    <ClCompile Include="Aufgabe1.cpp">
+      <Filter>Aufgabe1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GPUMngr.h">
@@ -55,5 +58,13 @@
     <Filter Include="GPUMngr">
       <UniqueIdentifier>{1412711d-3f04-4cc6-90e7-3d03728f9087}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Aufgabe1">
+      <UniqueIdentifier>{6dfcbe1f-4b56-4385-9336-4f48ef194b3e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Aufgabe1.cl">
+      <Filter>Aufgabe1</Filter>
+    </None>
   </ItemGroup>
 </Project>

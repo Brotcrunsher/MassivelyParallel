@@ -13,6 +13,6 @@ public:
 	GPUMem(cl_mem_flags flags, size_t size, void* host_ptr);
 	~GPUMem();
 
-	void read(void* output);
+	void read(void* output, size_t size = 0);
 };
 

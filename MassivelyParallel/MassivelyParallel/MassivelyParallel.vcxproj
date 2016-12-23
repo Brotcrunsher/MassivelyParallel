@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aufgabe1.cpp" />
     <ClCompile Include="GPUDevice.cpp" />
     <ClCompile Include="GPUKernel.cpp" />
     <ClCompile Include="GPUMem.cpp" />
@@ -172,6 +173,9 @@
     <ClInclude Include="GPUPlatform.h" />
     <ClInclude Include="GPUProgram.h" />
     <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Aufgabe1.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,8 +17,11 @@ GPUMem::~GPUMem()
 	}
 }
 
-void GPUMem::read(void * output)
+void GPUMem::read(void * output, size_t size)
 {
-	cl_int err = clEnqueueReadBuffer(GPUMngr::instance._queue, this->_mem, CL_TRUE, 0, _size, output, 0, NULL, NULL);
+	if (size == 0) {
+		size = _size;
+	}
+	cl_int err = clEnqueueReadBuffer(GPUMngr::instance._queue, this->_mem, CL_TRUE, 0, size, output, 0, NULL, NULL);
 	checkErr(err, "Reading a buffer failed!");
 }

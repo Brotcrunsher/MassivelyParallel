@@ -39,6 +39,13 @@ void GPUKernel::addArgBuffer(GPUMem & buffer)
 	_currentArgNum++;
 }
 
+void GPUKernel::addArgInt(cl_int i)
+{
+	cl_int err = clSetKernelArg(_kernel, _currentArgNum, sizeof(cl_mem), &i);
+	checkErr(err, "Load Buffer");
+	_currentArgNum++;
+}
+
 void GPUKernel::execute()
 {
 	clEnqueueNDRangeKernel(GPUMngr::instance._queue, this->_kernel, this->_dimension, NULL, this->_global_work_size, this->_local_work_size, 0, NULL, NULL);

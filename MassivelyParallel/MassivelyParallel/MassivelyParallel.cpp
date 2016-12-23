@@ -6,9 +6,13 @@
 #include "GPUProgram.h"
 #include "GPUKernel.h"
 
+int aufgabe1();
+int aufgabe2();
+int aufgabe3();
+
 int main()
 {
-	while (true) {
+	/*while (true) {
 		const char* input = "Gdkkn";
 		size_t strlength = strlen(input);
 		std::cout << "input string:" << std::endl;
@@ -40,8 +44,9 @@ int main()
 		free(output);
 
 		//TODO make all functions take pointers instead of objects
-	}
+	}*/
 	
+	aufgabe1();
 
 	while (true);
     return 0;
