@@ -1,7 +1,7 @@
 __kernel void baseAlgo(__global int* arr, __global int* prefixArr)
 {
 	int gloId = get_global_id(0);
-
+	//TODO better load this into a local buffer!
 	prefixArr[gloId * 2    ] = arr[gloId * 2    ];
 	prefixArr[gloId * 2 + 1] = arr[gloId * 2 + 1];
 
