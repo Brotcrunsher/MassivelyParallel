@@ -46,7 +46,7 @@ int main()
 		//TODO make all functions take pointers instead of objects
 	}*/
 	
-	aufgabe1();
+	aufgabe2();
 
 	while (true);
     return 0;

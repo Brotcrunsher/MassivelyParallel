@@ -8,12 +8,10 @@ __kernel void calcStatisticAtomic(__global int* in, int length, __global int* ou
 	int endIndex = 8 * (locId + 1);
 
 	local int counts[256];
-	local int subMate[256];
 
 	for (int i = startIndex; i < endIndex; i++) {
 		counts[i] = 0;
 		out[i] = 0;
-		subMate[i] = out[i];
 	}
 	for (int i = 0; i < 256; i++) {
 		if (gloId * 256 + i < length) {
@@ -26,9 +24,6 @@ __kernel void calcStatisticAtomic(__global int* in, int length, __global int* ou
 	barrier(CLK_LOCAL_MEM_FENCE);
 	for (int i = startIndex; i < endIndex; i++) {
 		atomic_add(&out[i], counts[i]);
-		if (subMate[i] != 0) {
-			out[i] = -subMate[i];
-		}
 	}
 }
 
@@ -40,10 +35,10 @@ __kernel void calcStatistic(__global int* in, int length, __global int* out)
 
 	local int counts[32][256];
 
-
 	for (int i = 0; i < 256; i++) {
 		counts[locId][i] = 0;
 	}
+	barrier(CLK_LOCAL_MEM_FENCE);
 
 	for (int i = 0; i < 256; i++) {
 		if (gloId * 256 + i < length) {
