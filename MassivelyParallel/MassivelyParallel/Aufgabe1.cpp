@@ -166,7 +166,7 @@ namespace a_one {
 
 			calcHistogramCPU(image, IMGLENGTH, histoCPU); //483ms
 			calcHistogramGPU(image, IMGLENGTH, histoGPU); //1823ms
-														  //calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //1684ms
+			//calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //1684ms
 
 			checkWinCondition(histoCPU, histoGPU);
 
