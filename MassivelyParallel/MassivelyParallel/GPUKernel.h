@@ -4,6 +4,8 @@
 class GPUProgram;
 class GPUMngr;
 
+const bool VERBOSE = false;
+
 class GPUKernel
 {
 	GPUFRIEND;
@@ -29,5 +31,7 @@ public:
 	void setDimension(cl_uint dimension);
 	void setGlobalWorkSize(const size_t *global_work_size);
 	void setLocalWorkSize(const size_t *local_work_size);
+
+	
 };
 

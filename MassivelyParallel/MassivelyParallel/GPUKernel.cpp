@@ -34,7 +34,8 @@ void GPUKernel::resetArgs()
 
 void GPUKernel::addArgBuffer(GPUMem & buffer)
 {
-	std::cout << "Adding Buffer " << buffer._mem << " at location " << _currentArgNum << std::endl;
+	if(VERBOSE)
+		std::cout << "Adding Buffer " << buffer._mem << " at location " << _currentArgNum << std::endl;
 	cl_int err = clSetKernelArg(_kernel, _currentArgNum, sizeof(cl_mem), (void*)&(buffer._mem));
 	checkErr(err, "Load Buffer");
 	_currentArgNum++;
@@ -42,7 +43,8 @@ void GPUKernel::addArgBuffer(GPUMem & buffer)
 
 void GPUKernel::addArgInt(cl_int i)
 {
-	std::cout << "Adding int " << i << " at location " << _currentArgNum << std::endl;
+	if(VERBOSE)
+		std::cout << "Adding int " << i << " at location " << _currentArgNum << std::endl;
 	cl_int err = clSetKernelArg(_kernel, _currentArgNum, sizeof(cl_int), &i);
 	checkErr(err, "Load Buffer");
 	_currentArgNum++;
