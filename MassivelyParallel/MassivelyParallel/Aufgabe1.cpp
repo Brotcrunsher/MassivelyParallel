@@ -63,7 +63,7 @@ namespace a_one {
 		kernelCalc->execute();
 
 		kernelReduce->addArgBuffer(outputBuffer);
-		kernelReduce->addArgInt(length);
+		kernelReduce->addArgInt((256) * nr_workgroups);
 
 		kernelReduce->setDimension(1);
 		size_t global_work_size_reduce[1] = { 256 };

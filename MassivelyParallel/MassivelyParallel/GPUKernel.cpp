@@ -52,7 +52,7 @@ void GPUKernel::addArgInt(cl_int i)
 
 void GPUKernel::execute()
 {
-	clEnqueueNDRangeKernel(GPUMngr::instance._queue, this->_kernel, this->_dimension, NULL, this->_global_work_size, this->_local_work_size, 0, NULL, NULL);
+	cl_int status= clEnqueueNDRangeKernel(GPUMngr::instance._queue, this->_kernel, this->_dimension, NULL, this->_global_work_size, this->_local_work_size, 0, NULL, NULL);
 }
 
 void GPUKernel::setDimension(cl_uint dimension)

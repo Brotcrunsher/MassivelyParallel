@@ -41,14 +41,17 @@ __kernel void calcStatistic(__global int* in, int length, __global int* out)
 	barrier(CLK_LOCAL_MEM_FENCE);
 
 	for (int i = 0; i < 256; i++) {
+		//TODO Jump instead of running through
 		if (gloId * 256 + i < length) {
 			int Index = gloId * 3 * 256 + i * 3;
 			float Y = 0.2126f * in[Index + 0] + 0.7152f * in[Index + 1] + 0.0722f * in[Index + 2];
+			Y = clamp(Y, 0.f, 255.f);
 			counts[locId][(int)Y] += 1;
 		}
 	}
 
 	barrier(CLK_LOCAL_MEM_FENCE);
+	//TODO Jump instead of running through
 	int startIndex = 8 * locId;
 	int endIndex = 8 * (locId + 1);
 	for (int i = startIndex; i < endIndex; i++) {
