@@ -29,6 +29,9 @@
     <ClCompile Include="Aufgabe2.cpp">
       <Filter>Aufgabe2</Filter>
     </ClCompile>
+    <ClCompile Include="Aufgabe3.cpp">
+      <Filter>Aufgabe3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GPUMngr.h">
@@ -67,6 +70,9 @@
     <Filter Include="Aufgabe2">
       <UniqueIdentifier>{3c0c0d5d-fb04-4480-87f2-928c11b4307d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Aufgabe3">
+      <UniqueIdentifier>{cfb3e15e-f6cb-4f98-9b58-01bde52c397e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Aufgabe1.cl">
@@ -74,6 +80,9 @@
     </None>
     <None Include="Aufgabe2.cl">
       <Filter>Aufgabe2</Filter>
+    </None>
+    <None Include="Aufgabe3.cl">
+      <Filter>Aufgabe3</Filter>
     </None>
   </ItemGroup>
 </Project>

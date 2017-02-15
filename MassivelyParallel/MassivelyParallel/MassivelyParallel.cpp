@@ -12,7 +12,7 @@ int aufgabe3();
 
 int main()
 {
-	aufgabe1();
+	aufgabe3();
 
 	while (true);
     return 0;
