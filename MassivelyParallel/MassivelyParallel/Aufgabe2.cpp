@@ -8,7 +8,8 @@ namespace a_two {
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 10);
-	std::uniform_int_distribution<size_t> uniformSize(3500, 60000);
+#define MAXARRLENGTH (1<<15)
+	std::uniform_int_distribution<size_t> uniformSize(1, MAXARRLENGTH);
 
 //#define ARRLENGTH 1024
 
@@ -157,9 +158,9 @@ namespace a_two {
 		initializeKernels();
 		while (true) {
 			size_t ARRLENGTH = uniformSize(rng);
-			cl_int* arr = new cl_int[ARRLENGTH];
-			cl_int* prefixArrCPU = new cl_int[ARRLENGTH];
-			cl_int* prefixArrGPU = new cl_int[ARRLENGTH];
+			cl_int* arr = new cl_int[MAXARRLENGTH];
+			cl_int* prefixArrCPU = new cl_int[MAXARRLENGTH];
+			cl_int* prefixArrGPU = new cl_int[MAXARRLENGTH];
 			std::cout << "Trying size: " << ARRLENGTH << std::endl;
 			fillRandom(arr, ARRLENGTH);
 			prefixCPU(arr, prefixArrCPU, ARRLENGTH);

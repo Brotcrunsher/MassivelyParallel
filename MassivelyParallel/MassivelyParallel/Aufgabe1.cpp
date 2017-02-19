@@ -84,12 +84,13 @@ namespace a_one {
 
 		cl_ulong time_start;
 		cl_ulong time_end;
-
+#ifdef OUTOFORDER
 		cl_int status = clGetEventProfilingInfo(calcEvent  , CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &time_start, nullptr);
 		checkErr(status, "Event profiling");
 		status = clGetEventProfilingInfo(reduceEvent, CL_PROFILING_COMMAND_END  , sizeof(cl_ulong), &time_end  , nullptr);
 		checkErr(status, "Event profiling");
 		cl_ulong time_taken = time_end - time_start;
+#endif
 		//std::cout << "Time needed: " << time_taken / 1000000.f << std::endl;
 		//Average (Pixel per Work Item : Time) :
 		//32   : 0.5
@@ -190,8 +191,8 @@ namespace a_one {
 
 
 			calcHistogramCPU(image, IMGLENGTH, histoCPU); //62.04ms
-			//calcHistogramGPU(image, IMGLENGTH, histoGPU); //64.37ms
-			calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //64.77ms
+			calcHistogramGPU(image, IMGLENGTH, histoGPU); //64.37ms
+			//calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //64.77ms
 
 			checkWinCondition(histoCPU, histoGPU);
 

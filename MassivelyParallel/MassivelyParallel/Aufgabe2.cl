@@ -1,9 +1,13 @@
+int pow_two(int exp) {
+	return 1 << exp;
+}
+
 __kernel void baseAlgo(__global int* arr, __global int* prefixArr)
 {
 	int locId = get_local_id(0);
-	__local int workArr[256];
-	workArr[locId * 2    ] = arr[locId * 2    ];
-	workArr[locId * 2 + 1] = arr[locId * 2 + 1];
+
+	prefixArr[locId * 2    ] = arr[locId * 2    ];
+	prefixArr[locId * 2 + 1] = arr[locId * 2 + 1];
 
 	barrier(CLK_LOCAL_MEM_FENCE);
 	//Upsweep
@@ -11,7 +15,7 @@ __kernel void baseAlgo(__global int* arr, __global int* prefixArr)
 		int lowIndex = pow_two(d) - 1 + locId * pow_two(d + 1);
 		int highIndex = pow_two(d + 1) - 1 + locId * pow_two(d + 1);
 		if (highIndex < 256) {
-			workArr[highIndex] = workArr[lowIndex] + workArr[highIndex];
+			prefixArr[highIndex] = prefixArr[lowIndex] + prefixArr[highIndex];
 		}
 		
 		
@@ -20,7 +24,7 @@ __kernel void baseAlgo(__global int* arr, __global int* prefixArr)
 
 	//Downsweep
 	if (locId == 0) {
-		workArr[255] = 0;
+		prefixArr[255] = 0;
 	}
 	barrier(CLK_LOCAL_MEM_FENCE);
 
@@ -28,15 +32,12 @@ __kernel void baseAlgo(__global int* arr, __global int* prefixArr)
 		int lowIndex = pow_two(d) - 1 + locId * pow_two(d + 1);
 		int highIndex = pow_two(d + 1) - 1 + locId * pow_two(d + 1);
 		if (highIndex < 256) {
-			int t = workArr[lowIndex];
-			workArr[lowIndex] = workArr[highIndex];
-			workArr[highIndex] = t + workArr[highIndex];
+			int t = prefixArr[lowIndex];
+			prefixArr[lowIndex] = prefixArr[highIndex];
+			prefixArr[highIndex] = t + prefixArr[highIndex];
 		}
 		barrier(CLK_LOCAL_MEM_FENCE);
 	}
-
-	prefixArr[locId * 2    ] = workArr[locId * 2    ];
-	prefixArr[locId * 2 + 1] = workArr[locId * 2 + 1];
 }
 
 int powi(int base, int exp) {
@@ -48,9 +49,7 @@ int powi(int base, int exp) {
 	return ret;
 }
 
-int pow_two(int exp) {
-	return 1 << exp;
-}
+
 
 
 __kernel void extendedAlgo(__global int* A, __global int* B, __global int* C)
