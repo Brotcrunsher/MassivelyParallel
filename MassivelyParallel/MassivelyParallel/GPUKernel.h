@@ -24,7 +24,7 @@ public:
 	void initialize(char *kernelName, GPUProgram &program);
 	void resetArgs();
 	void addArgBuffer(GPUMem &buffer);
-	void addArgInt(int i);
+	void addArgInt(cl_int i);
 
 	void execute();
 

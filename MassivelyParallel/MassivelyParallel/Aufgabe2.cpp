@@ -8,7 +8,7 @@ namespace a_two {
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 10);
-	std::uniform_int_distribution<size_t> uniformSize(1, 5000);
+	std::uniform_int_distribution<size_t> uniformSize(16000, 160000);
 
 //#define ARRLENGTH 1024
 
@@ -76,6 +76,7 @@ namespace a_two {
 			//TODO make recurive!
 			//TOPLEVEL MUST BE FALSE!
 			//_execExtendedAlgo();
+			_execExtendedAlgo(BufferA, BufferB, ALGOLENGTH / 256, LENGTH, prefix, false);
 		}
 		else {
 			_execBaseAlgo(BufferC, BufferD);

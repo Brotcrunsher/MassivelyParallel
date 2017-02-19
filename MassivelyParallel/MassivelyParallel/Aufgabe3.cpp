@@ -8,7 +8,7 @@ namespace a_three {
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 1000000);
-	std::uniform_int_distribution<size_t> uniformLogSize(7, 8);
+	std::uniform_int_distribution<size_t> uniformLogSize(7, 7);
 
 	GPUProgram* program;
 	GPUKernel* bitonicSort;
@@ -70,6 +70,7 @@ namespace a_three {
 		bool won = true;
 		for (int i = 0; i < LENGTH; i++) {
 			if (CPU[i] != GPU[i]) {
+
 				won = false;
 				break;
 			}
@@ -90,32 +91,23 @@ namespace a_three {
 		initializeKernels();
 		while (true) {
 			size_t arrLogSize = uniformLogSize(rng);
-			arrLogSize = 7;
 			size_t arrSize = 1 << arrLogSize;
 			cl_int* arrCPU = new cl_int[arrSize];
 			cl_int* arrGPU = new cl_int[arrSize];
-			cl_int* arrOrg = new cl_int[arrSize]; //Debugging
 			std::cout << "Trying log size/size: " << arrLogSize << "/" << arrSize << std::endl;
 			fillRandom(arrCPU, arrSize);
 			memcpy(arrGPU, arrCPU, sizeof(cl_int) * arrSize);
-			memcpy(arrOrg, arrCPU, sizeof(cl_int) * arrSize);
 
 			sortCPU(arrCPU, arrLogSize);
+			std::cout << "Done CPU" << std::endl;
 			sortGPU(arrGPU, arrLogSize);
-
-			for (int i = 0; i < arrSize; i++) {
-				std::cout << arrCPU[i] << "\t" << arrGPU[i] << "\t" << arrOrg[i] << std::endl;
-			}
-
-			while (true);
-
+			std::cout << "Done GPU" << std::endl;
 
 			checkWinCondition(arrCPU, arrGPU, arrSize);
 
 			std::cout << "Victory! :)" << std::endl;
 			delete[] arrCPU;
 			delete[] arrGPU;
-			delete[] arrOrg;
 		}
 
 

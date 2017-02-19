@@ -7,12 +7,8 @@ __kernel void bitonicSort(__global int* inArr, __global int* outArr, int logSize
 	int numBatches = logSize;
 	int globId = get_global_id(0);
 
-	//TODO make fast ;-)
-	if (globId == 0) {
-		for (int i = 0; i < 1 << logSize; i++) {
-			outArr[i] = inArr[i];
-		}
-	}
+	outArr[globId * 2] = inArr[globId * 2];
+	outArr[globId * 2 + 1] = inArr[globId * 2 + 1];
 
 	barrier(CLK_GLOBAL_MEM_FENCE);
 
