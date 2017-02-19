@@ -8,7 +8,7 @@ namespace a_three {
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 1000000);
-	std::uniform_int_distribution<size_t> uniformLogSize(7, 7);
+	std::uniform_int_distribution<size_t> uniformLogSize(7, 10);
 
 	GPUProgram* program;
 	GPUKernel* bitonicSort;

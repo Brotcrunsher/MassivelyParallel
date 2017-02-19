@@ -50,10 +50,12 @@ void GPUKernel::addArgInt(cl_int i)
 	_currentArgNum++;
 }
 
-void GPUKernel::execute()
+cl_event GPUKernel::execute(cl_uint num_events_in_wait_list, const cl_event *event_wait_list)
 {
-	cl_int status= clEnqueueNDRangeKernel(GPUMngr::instance._queue, this->_kernel, this->_dimension, NULL, this->_global_work_size, this->_local_work_size, 0, NULL, NULL);
+	cl_event currentEvent;
+	cl_int status= clEnqueueNDRangeKernel(GPUMngr::instance._queue, this->_kernel, this->_dimension, NULL, this->_global_work_size, this->_local_work_size, num_events_in_wait_list, event_wait_list, &currentEvent);
 	checkErr(status, "Execute Kernel");
+	return currentEvent;
 }
 
 void GPUKernel::setDimension(cl_uint dimension)

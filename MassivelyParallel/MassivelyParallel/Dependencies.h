@@ -2,6 +2,7 @@
 
 
 
+#define OUTOFORDER
 #include <CL/cl.h>
 #include <iostream>
 #include <fstream>

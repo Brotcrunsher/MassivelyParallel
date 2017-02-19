@@ -1,6 +1,7 @@
 // MassivelyParallel.cpp : Defines the entry point for the console application.
 //
 
+
 #include "Dependencies.h"
 #include "GPUMem.h"
 #include "GPUProgram.h"
@@ -12,7 +13,7 @@ int aufgabe3();
 
 int main()
 {
-	aufgabe2();
+	aufgabe3();
 
 	while (true);
     return 0;

@@ -54,6 +54,11 @@ void GPUMngr::initialize()
 	}
 
 	_context = clCreateContext(NULL, 1, _SelectedPlatform->getDeviceIdPtr(), NULL, NULL, NULL);
-
+#ifdef OUTOFORDER
+	std::cout << "Starting with \"out of Order!\"" << std::endl;
+	_queue = clCreateCommandQueue(_context, _SelectedPlatform->getDeviceId(), CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE, NULL);
+#else
+	std::cout << "Starting WITHOUT \"out of Order!\"" << std::endl;
 	_queue = clCreateCommandQueue(_context, _SelectedPlatform->getDeviceId(), 0, NULL);
+#endif
 }

@@ -1,18 +1,20 @@
 // MassivelyParallel.cpp : Defines the entry point for the console application.
 //
 
+
 #include "Dependencies.h"
 #include "GPUMem.h"
 #include "GPUProgram.h"
 #include "GPUKernel.h"
 
-namespace a_one {
-#define MAXIMGLENGTH (1024 * 32)
 
+
+namespace a_one {
+#define MAXIMGLENGTH (1024 * 64)
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 255);
-	std::uniform_int_distribution<size_t> uniformRandSize(1024, MAXIMGLENGTH);
+	std::uniform_int_distribution<size_t> uniformRandSize(1024 * 32, MAXIMGLENGTH);
 
 	GPUProgram* program;
 	GPUKernel* kernelCalc;
@@ -41,7 +43,9 @@ namespace a_one {
 	}
 
 	void calcHistogramGPU(const Pixel const *img, const size_t length, cl_int histo[]) {
-		size_t global_work_size[1] = { (length + 8191) / 8192 * 32 };
+		cl_int pixelPerWorkItem = 32;
+
+		size_t global_work_size[1] = { (length + 8191) / 8192 * 8192 / 32 };
 		size_t local_work_size[1] = { 32 };
 
 		size_t nr_workgroups = global_work_size[0] / local_work_size[0];
@@ -53,6 +57,7 @@ namespace a_one {
 
 		kernelCalc->addArgBuffer(inputBuffer);
 		kernelCalc->addArgInt(length);
+		kernelCalc->addArgInt(pixelPerWorkItem);
 		kernelCalc->addArgBuffer(outputBuffer);
 
 
@@ -60,7 +65,7 @@ namespace a_one {
 		kernelCalc->setGlobalWorkSize(global_work_size);
 		kernelCalc->setLocalWorkSize(local_work_size);
 
-		kernelCalc->execute();
+		cl_event calcEvent = kernelCalc->execute();
 
 		kernelReduce->addArgBuffer(outputBuffer);
 		kernelReduce->addArgInt((256) * nr_workgroups);
@@ -71,7 +76,27 @@ namespace a_one {
 		kernelReduce->setGlobalWorkSize(global_work_size_reduce);
 		kernelReduce->setLocalWorkSize(local_work_size_reduce);
 
-		kernelReduce->execute();
+		cl_event reduceEvent = kernelReduce->execute(1, &calcEvent);
+
+		//Könnte in ein Array gepackt werden
+		clWaitForEvents(1, &calcEvent);
+		clWaitForEvents(1, &reduceEvent);
+
+		cl_ulong time_start;
+		cl_ulong time_end;
+
+		cl_int status = clGetEventProfilingInfo(calcEvent  , CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &time_start, nullptr);
+		checkErr(status, "Event profiling");
+		status = clGetEventProfilingInfo(reduceEvent, CL_PROFILING_COMMAND_END  , sizeof(cl_ulong), &time_end  , nullptr);
+		checkErr(status, "Event profiling");
+		cl_ulong time_taken = time_end - time_start;
+		//std::cout << "Time needed: " << time_taken / 1000000.f << std::endl;
+		//Average (Pixel per Work Item : Time) :
+		//32   : 0.5
+		//64   : 0.55
+		//128  : 0.65
+		//256  : 0.8
+		//1024 : 1.2
 
 		outputBuffer.read(histo, 256 * sizeof(cl_int));
 	}
@@ -164,9 +189,9 @@ namespace a_one {
 			radomizeImage(image, IMGLENGTH);
 
 
-			calcHistogramCPU(image, IMGLENGTH, histoCPU); //483ms
-			calcHistogramGPU(image, IMGLENGTH, histoGPU); //1823ms
-			//calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //1684ms
+			calcHistogramCPU(image, IMGLENGTH, histoCPU); //62.04ms
+			//calcHistogramGPU(image, IMGLENGTH, histoGPU); //64.37ms
+			calcHistogramGPUAtomic(image, IMGLENGTH, histoGPU); //64.77ms
 
 			checkWinCondition(histoCPU, histoGPU);
 

@@ -26,7 +26,7 @@ public:
 	void addArgBuffer(GPUMem &buffer);
 	void addArgInt(cl_int i);
 
-	void execute();
+	cl_event execute(cl_uint num_events_in_wait_list = 0, const cl_event *event_wait_list = nullptr);
 
 	void setDimension(cl_uint dimension);
 	void setGlobalWorkSize(const size_t *global_work_size);

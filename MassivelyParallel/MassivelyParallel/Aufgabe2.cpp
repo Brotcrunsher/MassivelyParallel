@@ -8,7 +8,7 @@ namespace a_two {
 	std::random_device rnd;
 	std::mt19937_64 rng(rnd());
 	std::uniform_int_distribution<cl_int> uniformRand(0, 10);
-	std::uniform_int_distribution<size_t> uniformSize(16000, 160000);
+	std::uniform_int_distribution<size_t> uniformSize(3500, 60000);
 
 //#define ARRLENGTH 1024
 

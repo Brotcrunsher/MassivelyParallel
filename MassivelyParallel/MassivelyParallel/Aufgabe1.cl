@@ -4,30 +4,30 @@ __kernel void calcStatisticAtomic(__global int* in, int length, __global int* ou
 	int grpId = get_group_id(0);
 	int gloId = get_global_id(0);
 
-	int startIndex = 8 * locId;
-	int endIndex = 8 * (locId + 1);
 
+	int amountOfPixelsInWorkGroup = 256 * 32;
+	
 	local int counts[256];
 
-	for (int i = startIndex; i < endIndex; i++) {
+	for (int i = locId; i < 256; i+=32) {
 		counts[i] = 0;
 		out[i] = 0;
 	}
-	for (int i = 0; i < 256; i++) {
-		if (gloId * 256 + i < length) {
-			int Index = gloId * 3 * 256 + i * 3;
+	for (int i = locId; i < amountOfPixelsInWorkGroup; i += 32) {
+		if (i + grpId * amountOfPixelsInWorkGroup < length) {
+			int Index = (i + grpId * amountOfPixelsInWorkGroup) * 3;
 			float Y = 0.2126f * in[Index + 0] + 0.7152f * in[Index + 1] + 0.0722f * in[Index + 2];
 			atomic_inc(&counts[(int)Y]);
 		}
 	}
 
 	barrier(CLK_LOCAL_MEM_FENCE);
-	for (int i = startIndex; i < endIndex; i++) {
+	for (int i = locId; i < 256; i+=32) {
 		atomic_add(&out[i], counts[i]);
 	}
 }
 
-__kernel void calcStatistic(__global int* in, int length, __global int* out)
+__kernel void calcStatistic(__global int* in, int length, int pixelPerWorkitem, __global int* out)
 {
 	int locId = get_local_id(0);
 	int grpId = get_group_id(0);
@@ -40,10 +40,11 @@ __kernel void calcStatistic(__global int* in, int length, __global int* out)
 	}
 	barrier(CLK_LOCAL_MEM_FENCE);
 
-	for (int i = 0; i < 256; i++) {
-		//TODO Jump instead of running through
-		if (gloId * 256 + i < length) {
-			int Index = gloId * 3 * 256 + i * 3;
+	int amountOfPixelsInWorkGroup = pixelPerWorkitem * 32;
+
+	for (int i = locId; i < amountOfPixelsInWorkGroup; i+=32) {
+		if (i + grpId * amountOfPixelsInWorkGroup < length) {
+			int Index = (i + grpId * amountOfPixelsInWorkGroup) * 3;
 			float Y = 0.2126f * in[Index + 0] + 0.7152f * in[Index + 1] + 0.0722f * in[Index + 2];
 			Y = clamp(Y, 0.f, 255.f);
 			counts[locId][(int)Y] += 1;
@@ -51,10 +52,7 @@ __kernel void calcStatistic(__global int* in, int length, __global int* out)
 	}
 
 	barrier(CLK_LOCAL_MEM_FENCE);
-	//TODO Jump instead of running through
-	int startIndex = 8 * locId;
-	int endIndex = 8 * (locId + 1);
-	for (int i = startIndex; i < endIndex; i++) {
+	for (int i = locId; i < 256; i+=32) {
 		for (int k = 1; k < 32; k++) {
 			counts[0][i] += counts[k][i];
 		}
